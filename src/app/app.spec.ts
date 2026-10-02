@@ -1,23 +1,29 @@
 import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app'; 
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
+
+import { AppComponent } from './app';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      // A barra de busca (no cabeçalho) usa Router/ActivatedRoute e a Store usa HttpClient.
+      // Usamos versões de teste: nenhuma chamada real à API é feita.
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
   });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled).toBeTruthy();
+    expect(compiled.querySelector('h1')?.textContent).toContain('Notícias Radio Memory');
   });
 });

@@ -172,7 +172,7 @@ Duas rotas: `/` (lista) e `/post/:id` (detalhe). O detalhe lê o post por `getBy
 - `@for` com `track`, imagens com `loading="lazy"` (cards e selos do rodapé) e paginação visual com `slice`.
 - Ícones das redes sociais, da busca e dos estados em **SVG inline**, sem imagens extras.
 - O limite do "Carregar mais" usa `linkedSignal` e volta para a 1ª página quando a busca ou a categoria muda.
-- Build de produção enxuto: cerca de 300 kB iniciais (aproximadamente 82 kB transferidos, comprimidos).
+- Build de produção enxuto: cerca de 307 kB iniciais (aproximadamente 83 kB transferidos, comprimidos).
 
 ### Boas práticas Angular
 Componentes standalone, injeção por `inject()`, `takeUntilDestroyed` nas assinaturas, `catchError` + `finalize` para os skeletons nunca ficarem presos, e código comentado em português explicando o porquê das decisões.
