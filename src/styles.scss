@@ -1,12 +1,12 @@
 /* Para refletir a identidade visual da Radio Memory, apliquei alguns conceitos no styles.scss global e nos componentes de cards 
  */
 :root {
-  --primary-color: #0056b3;      /* Azul corporativo forte */
+  --primary-color: #0056b3;      
   --primary-hover: #003d82;
-  --neutral-dark: #2c3e50;       /* Texto principal */
-  --neutral-light: #f8f9fa;      /* Fundo de cartões/inputs */
-  --border-color: #e2e8f0;       /* Bordas sutis */
-  --accent-pin: #d97706;         /* Dourado/Laranja elegante para itens fixados */
+  --neutral-dark: #2c3e50;       
+  --neutral-light: #f8f9fa;      
+  --border-color: #e2e8f0;       
+  --accent-pin: #d97706;         
 }
 
 body {
