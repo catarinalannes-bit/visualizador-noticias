@@ -1,0 +1,29 @@
+<!-- Container principal flexível: empurra o conteúdo para ocupar toda a altura da tela. -->
+<div class="app-layout">
+
+  <!-- Cabeçalho institucional: marca à esquerda e busca/filtro no canto direito. -->
+  <header class="corporate-header">
+    <div class="header-container">
+
+      <!-- Marca: logo oficial + nome da seção. -->
+      <div class="brand">
+        <img class="brand-logo" src="logo-idoc.png" alt="iDoc" width="100" height="25">
+        <span class="brand-divider" aria-hidden="true"></span>
+        <h1 class="brand-title">Notícias Radio Memory</h1>
+      </div>
+
+      <!-- Busca por título/subtítulo e filtro por categoria. -->
+      <app-filter-bar class="header-filters"></app-filter-bar>
+
+    </div>
+  </header>
+
+  <!-- Conteúdo principal: o Angular troca o router-outlet pela lista ou pelo detalhe, conforme a URL. -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Rodapé institucional, igual ao do site da Radio Memory. -->
+  <app-site-footer></app-site-footer>
+
+</div>

@@ -1,0 +1,99 @@
+/* Container que abraça toda a tela: cabeçalho em cima, conteúdo embaixo. */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Cinza bem claro, para os cards brancos ganharem destaque. */
+  background-color: #f4f6f9;
+}
+
+/* Cabeçalho azul da marca, mais alto e encorpado: leve degradê e faixa escura embaixo. */
+.corporate-header {
+  background: linear-gradient(135deg, #005a85 0%, #004a6e 100%);
+  border-bottom: 4px solid #00405f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  /* Fica fixo no topo mesmo quando o usuário rola a página. */
+  position: sticky;
+  top: 0;
+  /* Sempre por cima dos cards durante a rolagem. */
+  z-index: 100;
+}
+
+/* Limita a largura (1200px) para o design não esticar em telas grandes. */
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* Marca: logo, divisor e título lado a lado. */
+.brand {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* em telas pequenas, o título desce para a linha de baixo */
+  gap: 0.9rem;
+}
+
+.brand-logo {
+  display: block;
+  width: 170px;
+  height: auto;
+}
+
+/* Linha vertical fina entre a logo e o título. */
+.brand-divider {
+  width: 1px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.25px;
+}
+
+/* Busca no canto superior direito do cabeçalho. */
+.header-filters {
+  display: block;
+  flex: 0 1 560px;
+  min-width: 0;
+}
+
+/* Área central onde o router-outlet renderiza as páginas. */
+.main-content {
+  /* Preenche o espaço que sobrar abaixo do cabeçalho. */
+  flex: 1;
+  /* Mesma largura máxima do cabeçalho, para o alinhamento ficar perfeito. */
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  /* O padding não aumenta a largura total (evita barra de rolagem horizontal). */
+  box-sizing: border-box;
+}
+
+/* Telas médias e pequenas: marca em cima, busca embaixo ocupando toda a largura. */
+@media (max-width: 900px) {
+  .header-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .header-filters {
+    flex: none;
+    width: 100%;
+  }
+
+  .brand-title {
+    font-size: 1.25rem;
+  }
+}

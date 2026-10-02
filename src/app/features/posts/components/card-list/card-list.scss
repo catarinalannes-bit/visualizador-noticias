@@ -1,0 +1,210 @@
+/* --- Layout em Grelha (Grid) Responsiva ---
+   3 colunas em telas largas (cards maiores, esticados pela largura disponível),
+   2 colunas em tablets e 1 coluna no celular. */
+.cards-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- Estados de erro e vazio: mesmo "cartão" visual, mudando só as cores --- */
+.error-state,
+.empty-state {
+  /* Estica por todas as colunas da grelha e centraliza o conteúdo. */
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+}
+
+.state-icon {
+  margin-bottom: 1rem;
+}
+
+.state-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.state-text {
+  margin: 0;
+  max-width: 460px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* Erro: tom vermelho suave (sem agredir a identidade azul). */
+.error-state {
+  border: 1px solid #fecaca;
+  border-top: 6px solid #dc2626;
+
+  .state-icon {
+    color: #dc2626;
+  }
+}
+
+/* Vazio: tom neutro, com borda tracejada. */
+.empty-state {
+  border: 1px dashed #cbd5e1;
+
+  .state-icon {
+    color: #94a3b8;
+  }
+}
+
+/* Botão "Tentar novamente": botão principal, na cor da marca
+   (mesmo estilo do "Ler no site original" do detalhe). */
+.btn-tentar-novamente {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: #005a85;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #004466;
+  }
+
+  /* Foco visível para quem navega pelo teclado. */
+  &:focus-visible {
+    outline: 3px solid #0369a1;
+    outline-offset: 2px;
+  }
+}
+
+/* --- Skeleton / Shimmer de Carregamento --- */
+
+/* O cartão fantasma tem o mesmo formato base do cartão real. */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 400px; // Altura aproximada do cartão real
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Animação de "onda" passando pelo elemento. */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Cinza base + animação do brilho em todos os elementos fantasma. */
+.skeleton-img, .skeleton-badge, .skeleton-title, .skeleton-text {
+  background: #f6f7f8;
+  /* Degradê cinza claro com um raio mais claro no meio, que se move. */
+  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  /* Fundo maior que o elemento, para a animação ter espaço. */
+  background-size: 800px 104px;
+  animation: shimmer 1.2s linear infinite forwards;
+}
+
+/* Acessibilidade: quem pediu "reduzir movimento" no sistema vê o esqueleto parado. */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-img, .skeleton-badge, .skeleton-title, .skeleton-text {
+    animation: none;
+  }
+}
+
+/* Tamanhos específicos para os blocos do esqueleto. */
+.skeleton-img {
+  height: 180px;
+  width: 100%;
+}
+
+.skeleton-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.skeleton-badge {
+  height: 20px;
+  width: 80px;
+  border-radius: 10px;
+}
+
+.skeleton-title {
+  height: 24px;
+  width: 100%;
+  border-radius: 4px;
+
+  &.short {
+    width: 70%;
+  }
+}
+
+.skeleton-text {
+  margin-top: auto;
+  height: 40px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+/* --- Botão "Carregar Mais" --- */
+
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0;
+}
+
+/* Botão "Carregar Mais": azul da marca; ao passar o mouse, inverte para branco. */
+.btn-load-more {
+  background-color: #005a85;
+  color: #ffffff;
+  border: 2px solid #005a85;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #ffffff;
+    color: #005a85;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Foco visível para quem navega pelo teclado. */
+  &:focus-visible {
+    outline: 3px solid #0369a1;
+    outline-offset: 2px;
+  }
+}

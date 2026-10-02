@@ -1,0 +1,28 @@
+<form class="filter-bar" role="search" (submit)="$event.preventDefault()">
+
+  <div class="search-field">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+    </svg>
+    <input type="search" class="search-input"
+           placeholder="Pesquisar por título ou subtítulo..."
+           aria-label="Pesquisar por título ou subtítulo"
+           [value]="store.searchQuery()"
+           (input)="onSearch($event)">
+  </div>
+
+  <!-- [selected] garante a categoria certa mesmo quando as opções chegam depois da API (F5 com ?categoria=). -->
+  <select class="category-select" aria-label="Filtrar por categoria"
+          (change)="onCategoryChange($event)">
+    <option value="" [selected]="!store.selectedCategory()">Todas as Categorias</option>
+    @for (category of store.categories(); track category) {
+      <option [value]="category"
+              [selected]="category.toLowerCase() === store.selectedCategory().toLowerCase()">
+        {{ category }}
+      </option>
+    }
+  </select>
+
+</form>

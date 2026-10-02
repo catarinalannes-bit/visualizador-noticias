@@ -1,0 +1,184 @@
+/* O cartão usa Flexbox em coluna para empilhar imagem, texto e rodapé. */
+.news-card {
+  /* Âncora para o link do título, que é esticado sobre o card inteiro (ver .card-link). */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 12px;
+  /* Esconde o que vazar das bordas (como as pontas da imagem). */
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Estica o cartão na altura toda disponível da grelha. */
+  height: 100%;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Cards fixados: borda superior de destaque (cor definida em styles.scss). */
+  &.pinned {
+    border-top: 8px solid var(--accent-pin, #d97706);
+  }
+
+  /* Foco do teclado: contorno no card inteiro, e não só no texto do título. */
+  &:has(.card-link:focus-visible) {
+    outline: 3px solid #0369a1;
+    outline-offset: 2px;
+  }
+
+  &:hover .card-link {
+    text-decoration: underline;
+  }
+}
+
+/* Invólucro da imagem: altura fixa para os cartões ficarem uniformes. */
+.card-image-wrapper {
+  height: 180px;
+  width: 100%;
+  background-color: #e2e8f0; // Cor de fundo enquanto a imagem carrega.
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  /* Preenche o espaço sem distorcer a imagem. */
+  object-fit: cover;
+}
+
+/* Cards sem imagem: fundo claro e suave, para não competir com o cabeçalho.
+   A logo (feita para fundo azul) fica dentro de uma etiqueta azul no centro. */
+.card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e0f2fe, #89c1f9);
+}
+
+.placeholder-logo {
+  box-sizing: content-box;
+  width: 110px;
+  height: auto;
+  padding: 0.6rem 1rem;
+  background-color: #005a85;
+  border-radius: 10px;
+}
+
+/* Espaçamento interno da área de texto. */
+.card-content {
+  padding: 1.5rem;
+  /* Expande esta área, empurrando o rodapé sempre para baixo. */
+  flex: 1;
+}
+
+/* Linha com a categoria (esquerda) e o rótulo "Fixado" (direita). */
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Distintivo (badge) de categoria. */
+.category-badge {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px; // Formato pílula.
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Rótulo "Fixado": ícone + texto, na cor de destaque dos pins. */
+.pin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-pin, #d97706);
+}
+
+.pin-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Título e subtítulo. */
+.card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+/* O link está no título, mas sua área clicável é esticada para o card inteiro:
+   o card todo é clicável e também alcançável pelo teclado (Tab + Enter). */
+.card-link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0; /* cobre todo o .news-card (que tem position: relative) */
+  }
+
+  /* O foco visível é desenhado no card inteiro (regra em .news-card). */
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.card-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+  /* Limita o subtítulo a 3 linhas, com '...' no fim se for muito longo. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Rodapé do cartão. */
+.card-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  background-color: #fafafa;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.author-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+
+  /* O prefixo "Por:" em destaque, na mesma cor da badge de categoria. */
+  strong {
+    font-weight: 700;
+    color: #0369a1;
+  }
+}
+
+.post-date {
+  font-size: 0.75rem;
+  color: #64748b;
+}

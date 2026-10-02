@@ -1,0 +1,18 @@
+/* Para refletir a identidade visual da Radio Memory, apliquei alguns conceitos no styles.scss global e nos componentes de cards 
+ */
+:root {
+  --primary-color: #0056b3;      /* Azul corporativo forte */
+  --primary-hover: #003d82;
+  --neutral-dark: #2c3e50;       /* Texto principal */
+  --neutral-light: #f8f9fa;      /* Fundo de cartões/inputs */
+  --border-color: #e2e8f0;       /* Bordas sutis */
+  --accent-pin: #d97706;         /* Dourado/Laranja elegante para itens fixados */
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f4f6f9;
+  color: var(--neutral-dark);
+  margin: 0;
+  padding: 0;
+}

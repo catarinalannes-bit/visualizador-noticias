@@ -1,0 +1,67 @@
+/* Barra dentro do cabeçalho azul: sem painel branco ao redor, só os campos. */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.search-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: #64748b;
+  pointer-events: none;
+}
+
+.search-input,
+.category-select {
+  height: 46px;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #1e293b;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  &:focus-visible {
+    outline: 3px solid #7dd3fc;
+    outline-offset: 2px;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: 0 1rem 0 2.6rem;
+
+  &::placeholder {
+    color: #64748b;
+  }
+}
+
+.category-select {
+  flex: 0 0 190px;
+  padding: 0 0.75rem;
+  cursor: pointer;
+}
+
+/* Celular: a categoria ocupa toda a largura, embaixo da busca. */
+@media (max-width: 520px) {
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .category-select {
+    flex: 1 1 100%;
+  }
+}

@@ -1,0 +1,51 @@
+<div class="detalhe-container" *ngIf="post">
+
+  <!-- Botão para voltar à lista -->
+ <a routerLink="/" class="btn-voltar"
+   [queryParams]="{ busca: store.searchQuery() || null, categoria: store.selectedCategory() || null }">
+  ← Voltar à Lista
+</a>
+
+  <header class="detalhe-header">
+  <span class="categoria-badge">{{ post.categoria }}</span>
+  <h1>{{ post.titulo }}</h1>
+  <h2 class="subtitulo">{{ post.subtitulo }}</h2>
+
+  <!-- Metadados exigidos: autor e data de publicação -->
+  <p class="metadados">
+    <span><strong>Por:</strong> {{ post.autor }}</span>
+    <time [attr.datetime]="post.data">{{ post.data | date:'dd/MM/yyyy HH:mm' }}</time>
+  </p>
+</header>
+
+  <!-- IMAGEM DE DESTAQUE: Exigência para a página de detalhes -->
+  <div class="detalhe-imagem-wrapper" *ngIf="post.imgUrl">
+    <img [src]="post.imgUrl" [alt]="post.titulo" loading="lazy" class="detalhe-img">
+  </div>
+
+  <!-- Corpo da Notícia blindado contra ataques XSS pelo SEU Pipe -->
+  <div class="corpo-noticia" [innerHTML]="post.corpo | safeHtml"></div>
+
+  <!-- Player de Vídeo Responsivo (Só aparece se o post tiver um videoUrl) -->
+  <div class="video-wrapper" *ngIf="post.videoUrl">
+    <iframe [src]="post.videoUrl | safeUrl" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- Rodapé com o Link Externo obrigatório abrindo em outra aba -->
+  <footer class="detalhe-footer">
+    <a [href]="post.urlPost" target="_blank" rel="noopener noreferrer" class="btn-site">
+      Ler no site original
+    </a>
+  </footer>
+</div>
+
+<!-- Enquanto a API responde, não mostramos "não encontrada" por engano -->
+<div *ngIf="!post && store.loading()" class="erro-not-found">
+  <p>Carregando notícia...</p>
+</div>
+
+<!-- Só diz "não encontrada" depois que o carregamento terminou -->
+<div *ngIf="!post && !store.loading()" class="erro-not-found">
+  <p>Notícia não encontrada.</p>
+  <a routerLink="/">Voltar ao início</a>
+</div>

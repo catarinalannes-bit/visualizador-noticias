@@ -1,0 +1,144 @@
+/* Rodapé na mesma cor azul da marca (igual ao cabeçalho e ao site oficial). */
+.site-footer {
+  --footer-bg: #005a85;
+  /* Azul claro dos links de contato. Um pouco mais claro que o do site,
+     para manter contraste legível (acessibilidade) sobre o fundo azul. */
+  --footer-link: #b3d3e5;
+
+  background-color: var(--footer-bg);
+  color: #ffffff;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+/* Mesma largura máxima do cabeçalho e do conteúdo (1200px). */
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+/* --- Logo --- */
+.footer-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+
+.footer-logo {
+  display: block;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Linha fina branca separando as áreas. */
+.footer-divider {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+/* --- Faixa central: Funcionamento | Contato | Selos --- */
+.footer-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2.5rem 2rem;
+  padding: 2.5rem 0;
+}
+
+.footer-block {
+  text-align: center;
+}
+
+.footer-title {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.footer-text {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  line-height: 1.6;
+
+  a {
+    color: var(--footer-link);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 2px;
+    }
+  }
+}
+
+/* --- Redes sociais --- */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+
+  a {
+    display: inline-flex;
+    color: #ffffff;
+    border-radius: 6px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      opacity: 0.85;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 4px;
+    }
+  }
+
+  svg {
+    display: block;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Partes "vazadas" dos ícones (o f, o in e o play) na cor do fundo. */
+.icon-cutout {
+  fill: var(--footer-bg);
+}
+
+/* --- Selos ANVISA e LGPD --- */
+.footer-seal {
+  display: block;
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+/* --- Copyright --- */
+.footer-copy {
+  margin: 0;
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Telas pequenas: tudo empilhado e centralizado, como no site. */
+@media (max-width: 768px) {
+  .footer-info {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+}

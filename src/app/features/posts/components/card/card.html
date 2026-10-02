@@ -1,0 +1,55 @@
+<article class="news-card" [class.pinned]="isPinned">
+
+  <!-- A área da imagem sempre existe, com a mesma altura: sem imagem, entra a logo
+       sobre o azul da marca e todos os cards ficam alinhados na grade. -->
+  <div class="card-image-wrapper">
+    @if (post.imgUrl) {
+      <!-- loading="lazy": imagens fora da tela só são baixadas quando o usuário rola (desempenho). -->
+      <!-- alt vazio: a imagem é decorativa, pois o título logo abaixo já descreve o conteúdo
+           (evita leitura duplicada em leitores de tela). -->
+      <img [src]="post.imgUrl" alt="" class="card-image" loading="lazy" />
+    } @else {
+      <!-- Sem imagem: fundo azul da marca com a logo oficial, no mesmo tamanho da imagem. -->
+      <div class="card-image-placeholder" aria-hidden="true">
+        <img src="logo-idoc.png" alt="" class="placeholder-logo">
+      </div>
+    }
+  </div>
+
+  <div class="card-content">
+
+    <header class="card-meta">
+      <span class="category-badge">{{ post.categoria }}</span>
+
+      <!-- Rótulo visível + ícone para posts fixados (regra: data_fixo >= agora). -->
+      @if (isPinned) {
+        <span class="pin-badge">
+          <svg class="pin-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/>
+          </svg>
+          Fixado
+        </span>
+      }
+    </header>
+
+    <!-- O link fica no título e é esticado por CSS para cobrir o card inteiro:
+         o card todo é clicável e também alcançável pelo teclado (Tab + Enter). -->
+    <h2 class="card-title">
+      <a class="card-link" [routerLink]="['/post', post.id]">{{ post.titulo }}</a>
+    </h2>
+
+    @if (post.subtitulo) {
+      <p class="card-subtitle">{{ post.subtitulo }}</p>
+    }
+
+  </div>
+
+  <footer class="card-footer">
+    <div class="author-info">
+      <span class="author-name"><strong>Por:</strong> {{ post.autor }}</span>
+      <!-- Data em pt-BR (dd/MM/yyyy HH:mm), conforme o edital. -->
+      <time class="post-date" [attr.datetime]="post.data">{{ post.data | date:'dd/MM/yyyy HH:mm' }}</time>
+    </div>
+  </footer>
+
+</article>
