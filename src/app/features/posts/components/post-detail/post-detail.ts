@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -30,10 +30,10 @@ import { CardComponent } from '../card/card';
 @Component({
   selector: 'app-post-detail',
   standalone: true,
-  // NgIf e DatePipe: usados no template; RouterModule: links "Voltar" e rota;
+    // DatePipe: data no template; RouterModule: links "Voltar" e rota;
   // SafeHtmlPipe e SafeUrlPipe: sanitização do corpo e do vídeo;
   // CardComponent: reaproveitado nos cards do "Leia também".
-  imports: [NgIf, DatePipe, RouterModule, SafeHtmlPipe, SafeUrlPipe, CardComponent],
+  imports: [DatePipe, RouterModule, SafeHtmlPipe, SafeUrlPipe, CardComponent],
   templateUrl: './post-detail.html',
   styleUrls: ['./post-detail.scss'],
   // OnPush: o post vem de signals da Store e da rota, então a tela
