@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-// 1. Corrigimos o nome para importar o PostDetailComponent corretamente
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { of } from 'rxjs';
+
 import { PostDetailComponent } from './post-detail';
-import { ActivatedRoute } from '@angular/router';
 import { PostsStoreService } from '../../../../core/services/posts-store';
 
 describe('PostDetailComponent', () => {
@@ -12,24 +13,33 @@ describe('PostDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PostDetailComponent],
       providers: [
-        // 2. Simulamos a rota para o teste não quebrar ao procurar o ID
+        // Rota simulada (/post/61). O componente lê o id como signal
+        // (toSignal sobre o paramMap), então a simulação precisa do
+        // paramMap como observable, além do snapshot usado como valor inicial.
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: { paramMap: { get: () => '61' } }
+            paramMap: of(convertToParamMap({ id: '61' })),
+            snapshot: { paramMap: convertToParamMap({ id: '61' }) }
           }
         },
-        // 3. Simulamos o seu Cérebro (Store) devolvendo uma lista vazia
+        // Store simulada, sem posts carregados: cobre tudo o que o componente
+        // e o template leem (post, relacionadas, carregamento e filtros do "Voltar").
         {
           provide: PostsStoreService,
-          useValue: { posts: () => [] }
+          useValue: {
+            getById: () => undefined,
+            getRelated: () => [],
+            loading: () => false,
+            searchQuery: () => '',
+            selectedCategory: () => ''
+          }
         }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PostDetailComponent);
     component = fixture.componentInstance;
-    // await fixture.whenStable();
   });
 
   it('should create', () => {

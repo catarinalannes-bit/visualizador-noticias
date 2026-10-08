@@ -37,7 +37,10 @@ describe('CardComponent', () => {
   it('mostra título e autor', () => {
     const texto = fixture.nativeElement.textContent as string;
     expect(texto).toContain('Notícia de Teste');
-    expect(texto).toContain('teste@radiomemory.com.br');
+        // O autor aparece como nome (AuthorNamePipe) e o e-mail completo fica no title (hover).
+    const autor = fixture.nativeElement.querySelector('.author-name') as HTMLElement;
+    expect(autor.textContent).toContain('Teste');
+    expect(autor.getAttribute('title')).toBe('teste@radiomemory.com.br');
   });
 
   it('marca como fixado quando data_fixo está no futuro', () => {
