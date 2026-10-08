@@ -1,18 +1,81 @@
-/* Para refletir a identidade visual da Radio Memory, apliquei alguns conceitos no styles.scss global e nos componentes de cards 
- */
+/* ==========================================================================
+   ESTILOS GLOBAIS
+   Design tokens: todas as cores, raios, sombras, foco e larguras do projeto
+   ficam centralizados aqui, em variáveis CSS. Os componentes usam var(--...)
+   em vez de valores soltos, então mudar uma cor da marca é feito em um só lugar.
+   As cores seguem a identidade visual da Radio Memory.
+   ========================================================================== */
 :root {
-  --primary-color: #0056b3;      
-  --primary-hover: #003d82;
-  --neutral-dark: #2c3e50;       
-  --neutral-light: #f8f9fa;      
-  --border-color: #e2e8f0;       
-  --accent-pin: #d97706;         
+  /* --- Marca --- */
+  --color-brand: #005a85;          /* azul principal: cabeçalho, botões, rodapé */
+  --color-brand-dark: #004466;     /* hover dos botões principais */
+  --color-brand-darker: #00405f;   /* detalhes escuros (borda do cabeçalho) */
+  --color-brand-accent: #0369a1;   /* links, etiquetas de categoria, foco */
+  --color-brand-light: #e0f2fe;    /* fundos claros (etiquetas, placeholder) */
+  --color-brand-soft: #89c1f9;     /* fim do degradê do placeholder */
+  --color-orange: #d97706;         /* laranja da marca (detalhes do banner) */
+  --color-orange-dark: #e67803;    /* laranja base da faixa do banner */
+  --color-pin: #d97706;            /* destaque dos posts fixados */
+
+  /* --- Texto --- */
+  --color-text-strong: #1e293b;    /* títulos */
+  --color-text: #334155;           /* texto comum */
+  --color-text-soft: #475569;      /* subtítulos, contadores */
+  --color-text-muted: #64748b;     /* datas, textos de apoio */
+  --color-icon-muted: #94a3b8;     /* ícones neutros */
+  --color-on-brand: #ffffff;       /* texto sobre o azul da marca */
+
+  /* --- Superfícies e bordas --- */
+  --color-bg-page: #f4f6f9;        /* fundo da página */
+  --color-surface: #ffffff;        /* cards e caixas */
+  --color-surface-soft: #fafafa;   /* rodapé dos cards */
+  --color-border: #e2e8f0;
+  --color-border-soft: #f1f5f9;
+  --color-border-strong: #cbd5e1;  /* borda tracejada do estado vazio */
+
+  /* --- Estados --- */
+  --color-error: #dc2626;
+  --color-error-soft: #fecaca;
+
+  /* --- Rodapé do site --- */
+    /* Links do rodapé: laranja claro, como no site oficial. É um pouco mais claro
+     que o laranja da marca para manter contraste mínimo (WCAG AA) sobre o azul. */
+  --color-footer-link: #ffbd6e;
+
+  /* --- Formas e efeitos --- */
+  --radius-sm: 8px;                /* botões */
+  --radius-md: 12px;               /* cards */
+  --radius-pill: 9999px;           /* etiquetas */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --focus-ring: 3px solid var(--color-brand-accent);  /* foco visível do teclado */
+
+  /* --- Layout --- */
+  --layout-max-width: 1280px;      /* largura máxima de cabeçalho, conteúdo e rodapé */
+}
+
+/* Escala base do site: 81,25% do tamanho padrão do navegador (13px em vez de 16px).
+   Como quase todos os tamanhos do projeto estão em rem, fontes e espaçamentos
+   diminuem juntos e na mesma proporção. Por ser porcentagem (e não px),
+   continua respeitando quem aumenta a fonte nas configurações do navegador. */
+html {
+  font-size: 81.25%;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f4f6f9;
-  color: var(--neutral-dark);
+  background-color: var(--color-bg-page);
+  color: var(--color-text-strong);
   margin: 0;
   padding: 0;
+}
+
+/* Botões e campos de formulário não herdam a fonte do site por padrão
+   (o navegador aplica a fonte do sistema). Esta regra garante a mesma
+   fonte em toda a interface: busca, filtro de categorias e botões. */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }

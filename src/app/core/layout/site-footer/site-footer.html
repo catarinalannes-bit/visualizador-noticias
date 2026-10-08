@@ -3,7 +3,7 @@
 
     <!-- Logo institucional centralizada -->
     <div class="footer-brand">
-      <img class="footer-logo" src="logo-idoc.png" alt="Radio Memory iDoc">
+      <img class="footer-logo" src="logo2-idoc.png" alt="Radio Memory iDoc">
     </div>
 
     <hr class="footer-divider">
@@ -71,10 +71,22 @@
         </nav>
       </section>
 
-      <img class="footer-seal" src="selo-anvisa.png" alt="Selo ANVISA"
-           width="140" height="140" loading="lazy">
-      <img class="footer-seal" src="selo-lgpd.png" alt="Selo LGPD e segurança de dados"
-           width="140" height="140" loading="lazy">
+      <!-- Selos agrupados: ficam lado a lado e são tratados como um bloco só.
+           O selo da ANVISA leva à consulta do registro do produto, em nova aba. -->
+      <div class="footer-seals">
+        <a href="https://consultas.anvisa.gov.br/#/saude/25351189537201979/?cnpj=71481253000172"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="seal-link"
+           aria-label="Consultar registro na ANVISA (abre em nova aba)">
+          <img class="footer-seal footer-seal--anvisa" src="selo-anvisa.png"
+               alt="Selo ANVISA" width="140" height="140" loading="lazy">
+        </a>
+
+        <img class="footer-seal footer-seal--lgpd" src="selo-lgpd.png"
+             alt="Selo LGPD e segurança de dados"
+             width="140" height="140" loading="lazy">
+      </div>
     </div>
 
     <hr class="footer-divider">

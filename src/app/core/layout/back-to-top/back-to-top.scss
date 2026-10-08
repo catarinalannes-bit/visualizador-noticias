@@ -1,0 +1,58 @@
+/* Botão redondo fixo no canto inferior direito, na cor da marca. */
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 48px: tamanho mínimo recomendado para áreas de toque no celular
+     (por isso não foi reduzido junto com a escala do site). */
+  width: 48px;
+  height: 48px;
+  /* Borda branca: destaca o botão tanto sobre o fundo claro dos cards
+     quanto sobre o azul do rodapé. */
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background-color: var(--color-brand);
+  color: var(--color-on-brand);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+
+  /* Estado inicial: invisível, levemente abaixo da posição final. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease,
+              visibility 0.25s ease, background-color 0.2s ease;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Visível: sobe e aparece suavemente. */
+  &.visivel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Mesmo hover dos botões principais do site. */
+  &:hover {
+    background-color: var(--color-brand-dark);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 3px;
+  }
+}
+
+/* Acessibilidade: sem animação para quem pediu "reduzir movimento". */
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+}

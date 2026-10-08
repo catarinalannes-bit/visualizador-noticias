@@ -1,51 +1,124 @@
-<div class="detalhe-container" *ngIf="post">
+@if (post; as post) {
+  <div class="detalhe-container">
 
-  <!-- Botão para voltar à lista -->
- <a routerLink="/" class="btn-voltar"
-   [queryParams]="{ busca: store.searchQuery() || null, categoria: store.selectedCategory() || null }">
-  ← Voltar à Lista
-</a>
-
-  <header class="detalhe-header">
-  <span class="categoria-badge">{{ post.categoria }}</span>
-  <h1>{{ post.titulo }}</h1>
-  <h2 class="subtitulo">{{ post.subtitulo }}</h2>
-
-  <!-- Metadados exigidos: autor e data de publicação -->
-  <p class="metadados">
-    <span><strong>Por:</strong> {{ post.autor }}</span>
-    <time [attr.datetime]="post.data">{{ post.data | date:'dd/MM/yyyy HH:mm' }}</time>
-  </p>
-</header>
-
-  <!-- IMAGEM DE DESTAQUE: Exigência para a página de detalhes -->
-  <div class="detalhe-imagem-wrapper" *ngIf="post.imgUrl">
-    <img [src]="post.imgUrl" [alt]="post.titulo" loading="lazy" class="detalhe-img">
-  </div>
-
-  <!-- Corpo da Notícia blindado contra ataques XSS pelo SEU Pipe -->
-  <div class="corpo-noticia" [innerHTML]="post.corpo | safeHtml"></div>
-
-  <!-- Player de Vídeo Responsivo (Só aparece se o post tiver um videoUrl) -->
-  <div class="video-wrapper" *ngIf="post.videoUrl">
-    <iframe [src]="post.videoUrl | safeUrl" frameborder="0" allowfullscreen></iframe>
-  </div>
-
-  <!-- Rodapé com o Link Externo obrigatório abrindo em outra aba -->
-  <footer class="detalhe-footer">
-    <a [href]="post.urlPost" target="_blank" rel="noopener noreferrer" class="btn-site">
-      Ler no site original
+    <!-- Volta à lista mantendo a busca e a categoria que estavam ativas. -->
+    <a routerLink="/" class="btn-voltar"
+       [queryParams]="{ busca: store.searchQuery() || null, categoria: store.selectedCategory() || null }">
+      ← Voltar à Lista
     </a>
-  </footer>
-</div>
 
-<!-- Enquanto a API responde, não mostramos "não encontrada" por engano -->
-<div *ngIf="!post && store.loading()" class="erro-not-found">
-  <p>Carregando notícia...</p>
-</div>
+    <header class="detalhe-header">
+      <span class="categoria-badge">{{ post.categoria }}</span>
+      <h1>{{ post.titulo }}</h1>
+      <h2 class="subtitulo">{{ post.subtitulo }}</h2>
 
-<!-- Só diz "não encontrada" depois que o carregamento terminou -->
-<div *ngIf="!post && !store.loading()" class="erro-not-found">
-  <p>Notícia não encontrada.</p>
-  <a routerLink="/">Voltar ao início</a>
-</div>
+      <!-- Metadados exigidos: autor e data de publicação. -->
+      <p class="metadados">
+        <span><strong>Por:</strong> {{ post.autor }}</span>
+        <time [attr.datetime]="post.data">{{ post.data | date:'dd/MM/yyyy HH:mm' }}</time>
+      </p>
+    </header>
+
+    <!-- Imagem de destaque. Sem loading="lazy": ela aparece logo no topo,
+         então deve carregar imediatamente. -->
+    @if (post.imgUrl) {
+      <div class="detalhe-imagem-wrapper">
+        <img [src]="post.imgUrl" [alt]="post.titulo" class="detalhe-img">
+      </div>
+    }
+
+    <!-- Corpo da notícia, sanitizado pelo SafeHtmlPipe contra ataques XSS. -->
+    <div class="corpo-noticia" [innerHTML]="post.corpo | safeHtml"></div>
+
+    <!-- Player de vídeo responsivo (só aparece se o post tiver videoUrl).
+         O title descreve o player para leitores de tela. -->
+    @if (post.videoUrl) {
+      <div class="video-wrapper">
+        <iframe [src]="post.videoUrl | safeUrl"
+                [title]="'Vídeo: ' + post.titulo"
+                allowfullscreen></iframe>
+      </div>
+    }
+
+    <!-- Rodapé: link externo para o site original (nova aba) e compartilhamento. -->
+    <footer class="detalhe-footer">
+      <a [href]="post.urlPost" target="_blank" rel="noopener noreferrer" class="btn-site">
+        Ler no site original
+      </a>
+
+      <div class="compartilhar">
+        <span class="compartilhar-label">Compartilhar:</span>
+
+        <a [href]="linkWhatsapp" target="_blank" rel="noopener noreferrer"
+           class="btn-share" aria-label="Compartilhar no WhatsApp (abre em nova aba)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+          </svg>
+          WhatsApp
+        </a>
+
+        <a [href]="linkLinkedin" target="_blank" rel="noopener noreferrer"
+           class="btn-share" aria-label="Compartilhar no LinkedIn (abre em nova aba)">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="21" height="21" rx="2.5" fill="currentColor"></rect>
+            <g fill="#ffffff">
+              <circle cx="7" cy="7.4" r="1.7"></circle>
+              <rect x="5.5" y="9.8" width="3" height="8.7"></rect>
+              <path d="M10.3 9.8h2.9v1.2c.5-.9 1.6-1.4 2.8-1.4 2.7 0 3.5 1.7 3.5 4.1v4.8h-3v-4.3c0-1.1-.1-2.1-1.4-2.1s-1.6 1-1.6 2.1v4.3h-3z"></path>
+            </g>
+          </svg>
+          LinkedIn
+        </a>
+
+        <button type="button" class="btn-share" (click)="copiarLink()">
+          @if (linkCopiado()) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Link copiado!
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            Copiar link
+          }
+        </button>
+
+        <!-- Anuncia a confirmação da cópia para leitores de tela. -->
+        <span class="sr-only" aria-live="polite">
+          @if (linkCopiado()) { Link copiado para a área de transferência. }
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- "Leia também": até 3 notícias da mesma categoria, reaproveitando o card da listagem.
+       Só aparece se houver relacionadas. -->
+  @if (relacionados().length) {
+    <section class="leia-tambem" aria-labelledby="leia-tambem-titulo">
+      <h2 id="leia-tambem-titulo" class="leia-tambem-titulo">Leia também: </h2>
+      <div class="leia-tambem-grid">
+        @for (relacionado of relacionados(); track relacionado.id) {
+          <app-card [post]="relacionado"></app-card>
+        }
+      </div>
+    </section>
+  }
+
+} @else if (store.loading()) {
+  <!-- Enquanto a API responde, não mostramos "não encontrada" por engano. -->
+  <div class="erro-not-found">
+    <p>Carregando notícia...</p>
+  </div>
+
+} @else {
+  <!-- Só diz "não encontrada" depois que o carregamento terminou. -->
+  <div class="erro-not-found">
+    <p>Notícia não encontrada.</p>
+    <a routerLink="/">Voltar ao início</a>
+  </div>
+}

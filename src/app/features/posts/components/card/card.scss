@@ -4,68 +4,115 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
   /* Esconde o que vazar das bordas (como as pontas da imagem). */
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  /* Estica o cartão na altura toda disponível da grelha. */
+  /* Estica o cartão na altura toda disponível da grade. */
   height: 100%;
   cursor: pointer;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-card-hover);
   }
 
-  /* Cards fixados: borda superior de destaque (cor definida em styles.scss). */
-  &.pinned {
-    border-top: 8px solid var(--accent-pin, #d97706);
+  /* Cards fixados: faixa superior de destaque (cor definida em styles.scss).
+     Feita com pseudo-elemento sobreposto, para não aumentar a altura do card
+     nem desalinhar a grade. */
+  &.pinned::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-color: var(--color-pin);
+    z-index: 1; /* fica por cima da imagem */
+    pointer-events: none; /* não atrapalha o clique no card */
   }
 
   /* Foco do teclado: contorno no card inteiro, e não só no texto do título. */
   &:has(.card-link:focus-visible) {
-    outline: 3px solid #0369a1;
+    outline: var(--focus-ring);
     outline-offset: 2px;
   }
 
   &:hover .card-link {
     text-decoration: underline;
   }
+
+  /* Zoom suave na imagem (ou no ícone do placeholder) ao passar o mouse.
+     O wrapper tem overflow: hidden, então nada vaza do card. */
+  &:hover .card-image,
+  &:hover .placeholder-icon {
+    transform: scale(1.05);
+  }
 }
 
-/* Invólucro da imagem: altura fixa para os cartões ficarem uniformes. */
+/* Proporção fixa (16:9): a imagem acompanha a largura do card
+   e todos os cards ficam uniformes. */
 .card-image-wrapper {
-  height: 180px;
+  aspect-ratio: 16 / 9;
   width: 100%;
-  background-color: #e2e8f0; // Cor de fundo enquanto a imagem carrega.
+  background-color: var(--color-border); // Cor de fundo enquanto a imagem carrega.
+  overflow: hidden;   /* impede a imagem de esticar a caixa */
+  flex-shrink: 0;     /* mantém a proporção dentro do flex do card */
 }
 
 .card-image {
+  display: block;  /* remove o espacinho extra embaixo da imagem */
   width: 100%;
   height: 100%;
-  /* Preenche o espaço sem distorcer a imagem. */
-  object-fit: cover;
+  object-fit: cover; /* Preenche o espaço sem distorcer a imagem. */
+  /* Prepara o zoom suave do hover (regra em .news-card). */
+  transition: transform 0.4s ease;
 }
 
-/* Cards sem imagem: fundo claro e suave, para não competir com o cabeçalho.
-   A logo (feita para fundo azul) fica dentro de uma etiqueta azul no centro. */
+/* --- Placeholder (cards sem imagem) ---
+   Mesmo fundo e mesma cor para todas as categorias, nas cores da marca:
+   o que diferencia cada uma é apenas o ícone (definido no card.html). */
 .card-image-placeholder {
+  --ph-inicio: var(--color-brand-light);
+  --ph-fim: var(--color-brand-soft);
+  --ph-destaque: var(--color-brand);
+
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #e0f2fe, #89c1f9);
+  background: linear-gradient(135deg, var(--ph-inicio), var(--ph-fim));
 }
 
+/* Círculo com o ícone da categoria, no azul da marca. */
+.placeholder-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;         
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--ph-destaque);
+  color: var(--color-on-brand);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Categorias sem ícone próprio: logo oficial dentro de uma etiqueta azul. */
 .placeholder-logo {
   box-sizing: content-box;
   width: 110px;
   height: auto;
   padding: 0.6rem 1rem;
-  background-color: #005a85;
+  background-color: var(--color-brand);
   border-radius: 10px;
 }
 
@@ -86,10 +133,10 @@
 
 /* Distintivo (badge) de categoria. */
 .category-badge {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: var(--color-brand-light);
+  color: var(--color-brand-accent);
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px; // Formato pílula.
+  border-radius: var(--radius-pill); // Formato pílula.
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -100,26 +147,35 @@
 .pin-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
+  gap: 0.25rem;       /* distância entre o pin e o texto */
+  font-size: 0.85rem; /* tamanho do texto */
+  line-height: 1;     /* tira o espaço extra que desalinha o texto */
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--accent-pin, #d97706);
+  color: var(--color-pin);
 }
 
 .pin-icon {
-  width: 18px;
-  height: 18px;
+  display: block;  /* tira o alinhamento pela linha de base */
+  flex-shrink: 0;  /* o ícone não encolhe */
+  width: 1.1em;    /* acompanha o tamanho do texto */
+  height: 1.1em;
 }
 
-/* Título e subtítulo. */
+/* Título limitado a 2 linhas, com '...' se for muito longo,
+   para manter os cards uniformes na grade. */
 .card-title {
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-strong);
   line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* O link está no título, mas sua área clicável é esticada para o card inteiro:
@@ -131,7 +187,7 @@
   &::after {
     content: '';
     position: absolute;
-    inset: 0; /* cobre todo o .news-card (que tem position: relative) */
+    inset: 0; /* cobre todo o .news-card */
   }
 
   /* O foco visível é desenhado no card inteiro (regra em .news-card). */
@@ -143,7 +199,7 @@
 .card-subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--color-text-soft);
   line-height: 1.5;
   /* Limita o subtítulo a 3 linhas, com '...' no fim se for muito longo. */
   display: -webkit-box;
@@ -156,8 +212,8 @@
 /* Rodapé do cartão. */
 .card-footer {
   padding: 1.25rem 1.5rem;
-  border-top: 1px solid #f1f5f9;
-  background-color: #fafafa;
+  border-top: 1px solid var(--color-border-soft);
+  background-color: var(--color-surface-soft);
 }
 
 .author-info {
@@ -167,18 +223,44 @@
 }
 
 .author-name {
+  /* Faz o nome ocupar só a largura do texto, para a dica não aparecer
+     na linha inteira do rodapé. */
+  align-self: flex-start;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #334155;
+  color: var(--color-text);
+  /* Fica acima da camada clicável do card (.card-link::after),
+     para o navegador exibir o e-mail completo (title) ao passar o mouse. */
+  position: relative;
+  z-index: 1;
+  /* Seta comum: o nome não é clicável (fica acima da camada do link),
+     então não deve herdar a "mãozinha" do card. */
+  cursor: default;
 
   /* O prefixo "Por:" em destaque, na mesma cor da badge de categoria. */
   strong {
     font-weight: 700;
-    color: #0369a1;
+    color: var(--color-brand-accent);
   }
 }
 
 .post-date {
   font-size: 0.75rem;
-  color: #64748b;
+  color: var(--color-text-muted);
+}
+
+/* Acessibilidade: quem pediu "reduzir movimento" no sistema
+   não vê o zoom nem a elevação do card. */
+@media (prefers-reduced-motion: reduce) {
+  .news-card,
+  .card-image,
+  .placeholder-icon {
+    transition: none;
+  }
+
+  .news-card:hover,
+  .news-card:hover .card-image,
+  .news-card:hover .placeholder-icon {
+    transform: none;
+  }
 }

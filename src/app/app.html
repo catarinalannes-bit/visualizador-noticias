@@ -18,10 +18,19 @@
     </div>
   </header>
 
+    <!-- Banner de destaque com efeito parallax: só na página inicial (listagem).
+       Na página de uma notícia, ficam apenas o cabeçalho e o rodapé. -->
+  @if (mostrarBanner()) {
+    <app-hero-banner></app-hero-banner>
+  }
+
   <!-- Conteúdo principal: o Angular troca o router-outlet pela lista ou pelo detalhe, conforme a URL. -->
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>
+
+  <!-- Botão flutuante "voltar ao topo" (aparece só depois de rolar a página). -->
+  <app-back-to-top></app-back-to-top>
 
   <!-- Rodapé institucional, igual ao do site da Radio Memory. -->
   <app-site-footer></app-site-footer>

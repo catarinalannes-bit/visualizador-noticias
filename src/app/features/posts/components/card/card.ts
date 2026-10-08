@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { AuthorNamePipe } from '../../../../core/pipes/author-name-pipe';
 import { Post } from '../../../../core/models/post';
 
 /**
@@ -14,7 +14,7 @@ import { Post } from '../../../../core/models/post';
 @Component({
   selector: 'app-card',
   standalone: true,
-    imports: [DatePipe, RouterModule],
+    imports: [DatePipe, RouterModule, AuthorNamePipe],
   // RouterModule: habilita o routerLink que leva ao detalhe.
  
   templateUrl: './card.html',

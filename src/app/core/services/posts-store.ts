@@ -21,10 +21,8 @@ export class PostsStoreService {
 
   private api = inject(AmnesesApiService);
 
-  // ---------------------------------------------------------------------------
   // ESTADO PRIVADO
   // Só a Store escreve nestes sinais; os componentes recebem versões somente leitura.
-  // ---------------------------------------------------------------------------
 
   /** Lista bruta (já com status === 1) vinda da AWS. */
   private readonly _posts = signal<Post[]>([]);
@@ -173,10 +171,43 @@ export class PostsStoreService {
   });
 
   /**
+   * true quando há busca ou categoria ativa.
+   * Usado na listagem para exibir o botão "Limpar filtros".
+   */
+  readonly hasActiveFilters = computed(
+    () => !!this.selectedCategory() || !!this.searchQuery().trim()
+  );
+
+  /**
+   * Limpa busca e categoria de uma vez (botão "Limpar filtros" da listagem).
+   * Como os filtros são signals, a lista, a FilterBar e a paginação reagem sozinhas.
+   */
+  clearFilters(): void {
+    this.selectedCategory.set('');
+    this.searchQuery.set('');
+  }
+
+
+  /**
    * Busca um post pelo id na lista COMPLETA (sem os filtros de busca/categoria).
    * O detalhe usa isto para não depender do filtro ativo na listagem.
    */
   getById(id: number): Post | undefined {
     return this._posts().find((p) => p.id === id);
   }
+
+  /**
+   * Notícias relacionadas para o "Leia também": mesma categoria do post,
+   * sem o próprio post, das mais recentes para as mais antigas.
+   * Usa a lista completa (sem os filtros da listagem).
+   */
+  getRelated(post: Post, limite = 3): Post[] {
+    const categoria = post.categoria?.toLowerCase();
+
+    return this._posts()
+      .filter((p) => p.id !== post.id && p.categoria?.toLowerCase() === categoria)
+      .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime())
+      .slice(0, limite);
+  }
+
 }

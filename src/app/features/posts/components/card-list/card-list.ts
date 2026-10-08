@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 
 import { CardComponent } from '../card/card';
@@ -38,6 +38,9 @@ export class CardListComponent {
     computation: () => TAMANHO_PAGINA
   });
 
+  /** Total de notícias após busca e categoria (exibido na barra de resultados). */
+  totalResultados = computed(() => this.store.filteredPosts().length);
+
   /** Botão "Carregar mais": revela mais uma página de cards (paginação visual). */
   carregarMais(): void {
     this.limite.update((atual) => atual + TAMANHO_PAGINA);
@@ -47,5 +50,13 @@ export class CardListComponent {
   tentarNovamente(): void {
     this.limite.set(TAMANHO_PAGINA);
     this.store.loadPosts();
+  }
+
+  /**
+   * Botão "Limpar filtros": zera busca e categoria na Store.
+   * A paginação volta à primeira página sozinha (linkedSignal 'limite').
+   */
+  limparFiltros(): void {
+    this.store.clearFilters();
   }
 }

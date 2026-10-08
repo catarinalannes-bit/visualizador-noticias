@@ -2,8 +2,8 @@
 .detalhe-container {
   max-width: 820px;
   margin: 0 auto;
-  background-color: #ffffff;
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
   padding: 2rem 2.5rem 2.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
   /* Permite que o painel encolha em telas estreitas e quebra palavras
@@ -18,17 +18,17 @@
   align-items: center;
   margin: 0 0 1.5rem -0.75rem;
   padding: 0.5rem 0.75rem;
-  color: #005a85;
+  color: var(--color-brand);
   font-weight: 600;
   text-decoration: none;
   border-radius: 6px;
 
   &:hover {
-    background-color: #e0f2fe;
+    background-color: var(--color-brand-light);
   }
 
   &:focus-visible {
-    outline: 3px solid #0369a1;
+    outline: var(--focus-ring);
     outline-offset: 2px;
   }
 }
@@ -41,17 +41,17 @@
     margin: 0.75rem 0 0.5rem;
     font-size: 2rem;
     line-height: 1.25;
-    color: #1e293b;
+    color: var(--color-text-strong);
   }
 }
 
 /* Mesma badge de categoria usada nos cards. */
 .categoria-badge {
   display: inline-block;
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: var(--color-brand-light);
+  color: var(--color-brand-accent);
   padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -63,7 +63,7 @@
   font-size: 1.15rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #475569;
+  color: var(--color-text-soft);
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
@@ -76,10 +76,10 @@
   gap: 0.5rem 1.5rem;
   margin: 1rem 0 0;
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--color-text-muted);
 
   strong {
-    color: #0369a1;
+    color: var(--color-brand-accent);
   }
 }
 
@@ -87,9 +87,9 @@
    textos que fazem parte da arte (ex.: banners). */
 .detalhe-imagem-wrapper {
   margin: 0 0 2rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  background-color: #e2e8f0;
+  background-color: var(--color-border);
 }
 
 .detalhe-img {
@@ -101,17 +101,16 @@
 
 /* Corpo da notícia (HTML vindo da API, já sanitizado pelo SafeHtmlPipe).
    ATENÇÃO: o conteúdo inserido via [innerHTML] não recebe o atributo de
-   encapsulamento do Angular, por isso os seletores internos usam ::ng-deep. */
-
+   encapsulamento do Angular, por isso os seletores internos usam ::ng-deep
+   (sempre aninhado em .corpo-noticia, para não vazar para o resto do site). */
 .corpo-noticia {
   font-size: 1.05rem;
   line-height: 1.75;
-  color: #334155;
+  color: var(--color-text);
   overflow-wrap: anywhere;
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
-
 
   ::ng-deep {
     p {
@@ -121,11 +120,11 @@
     h1, h2, h3, h4 {
       margin: 1.75rem 0 0.75rem;
       line-height: 1.3;
-      color: #1e293b;
+      color: var(--color-text-strong);
     }
 
     a {
-      color: #005a85;
+      color: var(--color-brand);
     }
 
     ul, ol {
@@ -136,8 +135,8 @@
     blockquote {
       margin: 1.25rem 0;
       padding: 0.5rem 1rem;
-      border-left: 4px solid #cbd5e1;
-      color: #475569;
+      border-left: 4px solid var(--color-border-strong);
+      color: var(--color-text-soft);
     }
 
     /* Imagens, vídeos e tabelas do conteúdo nunca passam da largura do painel. */
@@ -163,7 +162,7 @@
   height: 0;
   overflow: hidden;
   margin: 2rem 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 
   iframe {
     position: absolute;
@@ -175,32 +174,123 @@
   }
 }
 
-/* Rodapé com o link externo para o site original. */
+/* Rodapé da notícia: "Ler no site original" à esquerda,
+   compartilhamento à direita (empilham no celular). */
 .detalhe-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border);
 }
 
-/* Botão principal "Ler no site original" (abre em nova aba). */
+/* Botão principal "Ler no site original" (abre em nova aba).
+   Mesmo padrão dos botões principais da listagem: azul da marca e,
+   no hover, azul mais escuro com leve elevação. */
 .btn-site {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: #005a85;
-  color: #ffffff;
+  background-color: var(--color-brand);
+  color: var(--color-on-brand);
   font-weight: 600;
   text-decoration: none;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background-color: #004466;
+    background-color: var(--color-brand-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.12);
   }
 
   &:focus-visible {
-    outline: 3px solid #0369a1;
+    outline: var(--focus-ring);
     outline-offset: 2px;
   }
+}
+
+/* --- Compartilhar --- */
+.compartilhar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.compartilhar-label {
+  margin-right: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+/* Botões secundários em formato pílula: discretos ao lado do botão principal. */
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  color: var(--color-brand);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  svg {
+    flex-shrink: 0;
+    width: 1.1em;
+    height: 1.1em;
+  }
+
+  &:hover {
+    background-color: var(--color-brand-light);
+    border-color: var(--color-brand-light);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Texto lido só por leitores de tela (visualmente oculto). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Leia também ---
+   Ocupa a largura do conteúdo (mais largo que o painel da notícia),
+   com a mesma grade da listagem: os cards ficam do mesmo tamanho. */
+.leia-tambem {
+  margin-top: 3.5rem;
+}
+
+.leia-tambem-titulo {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+
+.leia-tambem-grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 /* Mensagens de "carregando" e "notícia não encontrada". */
@@ -209,23 +299,46 @@
   margin: 2rem auto;
   padding: 3rem 1.5rem;
   text-align: center;
-  color: #64748b;
-  background-color: #ffffff;
-  border-radius: 12px;
+  color: var(--color-text-muted);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
 
   a {
-    color: #005a85;
+    color: var(--color-brand);
     font-weight: 600;
   }
 }
 
-/* Telas pequenas: menos espaçamento e título menor. */
-@media (max-width: 600px) {
+/* Acessibilidade: sem a elevação do botão para quem pediu "reduzir movimento". */
+@media (prefers-reduced-motion: reduce) {
+  .btn-site {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Tablets: "Leia também" em 2 colunas. */
+@media (max-width: 900px) {
+  .leia-tambem-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+/* Telas pequenas: menos espaçamento, título menor e "Leia também" em 1 coluna. */
+@media (max-width: 700px) {
   .detalhe-container {
     padding: 1.25rem 1rem 1.5rem;
   }
 
   .detalhe-header h1 {
     font-size: 1.5rem;
+  }
+
+  .leia-tambem-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

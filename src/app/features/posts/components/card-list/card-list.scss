@@ -1,19 +1,96 @@
-/* --- Layout em Grelha (Grid) Responsiva ---
-   3 colunas em telas largas (cards maiores, esticados pela largura disponível),
-   2 colunas em tablets e 1 coluna no celular. */
+/* --- Botões: base compartilhada ---
+   Todos os botões da listagem seguem o mesmo padrão do botão principal do site
+   ("Ler no site original" do detalhe): mesmos cantos, peso de fonte, transição
+   e foco visível. O %placeholder do SCSS evita repetir essas regras. */
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease,
+              transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* Foco visível para quem navega pelo teclado. */
+  &:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Botão principal: azul da marca; no hover, azul mais escuro com leve elevação. */
+%btn-primary {
+  @extend %btn-base;
+  padding: 0.75rem 1.75rem;
+  background-color: var(--color-brand);
+  color: var(--color-on-brand);
+  border: 2px solid var(--color-brand);
+  font-size: 1rem;
+
+  &:hover {
+    background-color: var(--color-brand-dark);
+    border-color: var(--color-brand-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* --- Barra de resultados: total de notícias + "Limpar filtros" --- */
+.results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* no celular, o botão desce para a linha de baixo */
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.results-count {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+
+  strong {
+    font-weight: 700;
+    color: var(--color-text-strong);
+  }
+}
+
+/* Botão "Limpar filtros": mesmo estilo e mesmo hover do "Carregar Mais",
+   em tamanho menor por ser uma ação secundária. */
+.btn-limpar-filtros {
+  @extend %btn-primary;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  gap: 0.35rem;
+
+  svg {
+    width: 0.9em;
+    height: 0.9em;
+  }
+}
+
+/* --- Layout em grade (grid) responsiva ---
+   3 colunas em notebooks e telas grandes, 2 em tablets (em pé) e 1 no celular.
+   A largura total vem do token --layout-max-width (styles.scss). */
 .cards-grid {
   display: grid;
-  gap: 2rem;
+  gap: 3rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   width: 100%;
 }
 
-@media (max-width: 1100px) {
+/* Tablets em pé: 3 colunas deixariam os cards estreitos demais. */
+@media (max-width: 900px) {
   .cards-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
   }
 }
 
+/* Celular: 1 coluna. */
 @media (max-width: 700px) {
   .cards-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -23,15 +100,15 @@
 /* --- Estados de erro e vazio: mesmo "cartão" visual, mudando só as cores --- */
 .error-state,
 .empty-state {
-  /* Estica por todas as colunas da grelha e centraliza o conteúdo. */
+  /* Estica por todas as colunas da grade e centraliza o conteúdo. */
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: 3.5rem 1.5rem;
-  background-color: #ffffff;
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
 }
 
@@ -43,7 +120,7 @@
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-strong);
 }
 
 .state-text {
@@ -51,63 +128,49 @@
   max-width: 460px;
   font-size: 1rem;
   line-height: 1.5;
-  color: #64748b;
+  color: var(--color-text-muted);
 }
 
 /* Erro: tom vermelho suave (sem agredir a identidade azul). */
 .error-state {
-  border: 1px solid #fecaca;
-  border-top: 6px solid #dc2626;
+  border: 1px solid var(--color-error-soft);
+  border-top: 6px solid var(--color-error);
 
   .state-icon {
-    color: #dc2626;
+    color: var(--color-error);
   }
 }
 
 /* Vazio: tom neutro, com borda tracejada. */
 .empty-state {
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed var(--color-border-strong);
 
   .state-icon {
-    color: #94a3b8;
+    color: var(--color-icon-muted);
   }
 }
 
-/* Botão "Tentar novamente": botão principal, na cor da marca
-   (mesmo estilo do "Ler no site original" do detalhe). */
+/* Botão "Tentar novamente": botão principal, no padrão do site. */
 .btn-tentar-novamente {
+  @extend %btn-primary;
   margin-top: 1.5rem;
-  padding: 0.75rem 1.75rem;
-  background-color: #005a85;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #004466;
-  }
-
-  /* Foco visível para quem navega pelo teclado. */
-  &:focus-visible {
-    outline: 3px solid #0369a1;
-    outline-offset: 2px;
-  }
 }
 
-/* --- Skeleton / Shimmer de Carregamento --- */
+/* --- Skeleton / Shimmer de carregamento --- */
 
-/* O cartão fantasma tem o mesmo formato base do cartão real. */
+/* Tons de cinza usados só no skeleton (por isso ficam aqui, e não nos tokens globais). */
+$skeleton-base: #f6f7f8;
+$skeleton-brilho: #edeef1;
+
+/* O cartão fantasma tem o mesmo formato do cartão real.
+   Sem altura fixa: a altura vem da imagem (16:9) + conteúdo, como no card real,
+   para a tela não "pular" quando os posts aparecem. */
 .skeleton-card {
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  border-radius: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  height: 400px; // Altura aproximada do cartão real
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
@@ -123,9 +186,9 @@
 
 /* Cinza base + animação do brilho em todos os elementos fantasma. */
 .skeleton-img, .skeleton-badge, .skeleton-title, .skeleton-text {
-  background: #f6f7f8;
+  background: $skeleton-base;
   /* Degradê cinza claro com um raio mais claro no meio, que se move. */
-  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-image: linear-gradient(to right, $skeleton-base 0%, $skeleton-brilho 20%, $skeleton-base 40%, $skeleton-base 100%);
   background-repeat: no-repeat;
   /* Fundo maior que o elemento, para a animação ter espaço. */
   background-size: 800px 104px;
@@ -141,7 +204,8 @@
 
 /* Tamanhos específicos para os blocos do esqueleto. */
 .skeleton-img {
-  height: 180px;
+  /* Mesma proporção da imagem do card real. */
+  aspect-ratio: 16 / 9;
   width: 100%;
 }
 
@@ -155,7 +219,7 @@
 .skeleton-badge {
   height: 20px;
   width: 80px;
-  border-radius: 10px;
+  border-radius: var(--radius-pill);
 }
 
 .skeleton-title {
@@ -169,7 +233,6 @@
 }
 
 .skeleton-text {
-  margin-top: auto;
   height: 40px;
   width: 100%;
   border-radius: 4px;
@@ -180,31 +243,10 @@
 .load-more-wrapper {
   display: flex;
   justify-content: center;
-  margin: 2.5rem 0;
+  margin: 4rem 0 0;
 }
 
-/* Botão "Carregar Mais": azul da marca; ao passar o mouse, inverte para branco. */
+/* Botão "Carregar Mais": botão principal, no padrão do site. */
 .btn-load-more {
-  background-color: #005a85;
-  color: #ffffff;
-  border: 2px solid #005a85;
-  padding: 12px 32px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    background-color: #ffffff;
-    color: #005a85;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Foco visível para quem navega pelo teclado. */
-  &:focus-visible {
-    outline: 3px solid #0369a1;
-    outline-offset: 2px;
-  }
+  @extend %btn-primary;
 }

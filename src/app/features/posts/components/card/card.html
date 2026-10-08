@@ -1,7 +1,7 @@
 <article class="news-card" [class.pinned]="isPinned">
 
-  <!-- A área da imagem sempre existe, com a mesma altura: sem imagem, entra a logo
-       sobre o azul da marca e todos os cards ficam alinhados na grade. -->
+  <!-- A área da imagem sempre existe, com a mesma proporção: sem imagem, entra um
+       placeholder na mesma proporção e todos os cards ficam alinhados na grade. -->
   <div class="card-image-wrapper">
     @if (post.imgUrl) {
       <!-- loading="lazy": imagens fora da tela só são baixadas quando o usuário rola (desempenho). -->
@@ -9,9 +9,48 @@
            (evita leitura duplicada em leitores de tela). -->
       <img [src]="post.imgUrl" alt="" class="card-image" loading="lazy" />
     } @else {
-      <!-- Sem imagem: fundo azul da marca com a logo oficial, no mesmo tamanho da imagem. -->
-      <div class="card-image-placeholder" aria-hidden="true">
-        <img src="logo-idoc.png" alt="" class="placeholder-logo">
+      <!-- Sem imagem: placeholder com ícone da categoria, nas cores da marca.
+           data-categoria define as cores no SCSS. Categorias sem ícone próprio
+           (por exemplo, uma nova vinda da API) recebem a logo oficial. -->
+      <div class="card-image-placeholder"
+           [attr.data-categoria]="post.categoria?.toLowerCase()"
+           aria-hidden="true">
+        @switch (post.categoria?.toLowerCase()) {
+          @case ('blog') {
+            <span class="placeholder-icon">
+              <!-- Lápis: conteúdo escrito. -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+              </svg>
+            </span>
+          }
+          @case ('treinamento') {
+            <span class="placeholder-icon">
+              <!-- Chapéu de formatura: capacitação. -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10 12 5 2 10l10 5 10-5Z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            </span>
+          }
+          @case ('marketing') {
+            <span class="placeholder-icon">
+              <!-- Megafone: divulgação. -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 11 18-5v12L3 13v-2Z"></path>
+                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path>
+              </svg>
+            </span>
+          }
+          @default {
+            <!-- Categoria sem ícone definido: logo oficial sobre etiqueta azul. -->
+            <img src="logo-idoc.png" alt="" class="placeholder-logo">
+          }
+        }
       </div>
     }
   </div>
@@ -46,7 +85,11 @@
 
   <footer class="card-footer">
     <div class="author-info">
-      <span class="author-name"><strong>Por:</strong> {{ post.autor }}</span>
+      <!-- O pipe authorName exibe o e-mail do autor como nome ("reis@..." → "Reis");
+           o e-mail completo aparece ao passar o mouse (title). -->
+      <span class="author-name" [attr.title]="post.autor">
+        <strong>Por:</strong> {{ post.autor | authorName }}
+      </span>
       <!-- Data em pt-BR (dd/MM/yyyy HH:mm), conforme o edital. -->
       <time class="post-date" [attr.datetime]="post.data">{{ post.data | date:'dd/MM/yyyy HH:mm' }}</time>
     </div>

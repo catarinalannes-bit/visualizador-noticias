@@ -1,20 +1,20 @@
-/* Rodapé na mesma cor azul da marca (igual ao cabeçalho e ao site oficial). */
+/* Rodapé na mesma cor azul da marca (igual ao cabeçalho e ao site oficial).
+   A largura máxima vem do token --layout-max-width (styles.scss), a mesma do
+   cabeçalho e do conteúdo, para as linhas do rodapé alinharem com os cards. */
 .site-footer {
-  --footer-bg: #005781;
-  /* Azul claro dos links de contato. Um pouco mais claro que o do site,
-     para manter contraste legível (acessibilidade) sobre o fundo azul. */
-  --footer-link: #b3d3e5;
+  /* Variável local: usada no fundo e nas partes "vazadas" dos ícones sociais. */
+  --footer-bg: var(--color-brand);
 
   background-color: var(--footer-bg);
-  color: #ffffff;
-  font-family: 'Montserrat', Arial, sans-serif;
+  color: var(--color-on-brand);
+  /* Herda a fonte global do site: fica sempre igual ao cabeçalho e aos cards. */
+  font-family: inherit;
 }
 
-/* Mesma largura máxima do cabeçalho e do conteúdo (1200px). */
 .footer-container {
-  max-width: 1200px;
+  max-width: var(--layout-max-width);
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 1.5rem;
+  padding: 2.25rem 1.5rem 0;
   box-sizing: border-box;
 }
 
@@ -23,17 +23,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding-bottom: 2rem;
-  text-align: center;
+  padding-bottom: 2.25rem;
 }
 
 .footer-logo {
   display: block;
-  width: 220px;
+  width: 160px; /* antes 200px (ajustado à nova escala base) */
   max-width: 100%;
   height: auto;
-  margin: 0 auto;
 }
 
 /* Linha fina branca separando as áreas. */
@@ -43,14 +40,17 @@
   margin: 0;
 }
 
-/* --- Faixa central: Funcionamento | Contato | Selos --- */
+/* --- Faixa central: Funcionamento | Contato | Selos ---
+   Grade de 3 colunas: a do meio (Contato) tem a largura do próprio conteúdo
+   e fica exatamente no centro da página; as laterais dividem o espaço
+   restante por igual, com o conteúdo centralizado em cada uma. */
 .footer-info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  justify-items: center;
   gap: 2.5rem 2rem;
-  padding: 2.5rem 0;
+  padding: 2.75rem 0;
 }
 
 .footer-block {
@@ -58,26 +58,30 @@
 }
 
 .footer-title {
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
   font-size: 1.5rem;
   font-weight: 500;
+  line-height: 1.2;
 }
 
 .footer-text {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.85rem;
   font-size: 1rem;
-  line-height: 1.6;
+  font-weight: 400;
+  line-height: 1.5;
 
   a {
-    color: var(--footer-link);
+    color: var(--color-footer-link);
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
     }
 
+    /* Foco em branco (e não com o token --focus-ring, que é azul):
+       sobre o fundo azul do rodapé, o contorno azul quase não apareceria. */
     &:focus-visible {
-      outline: 3px solid #ffffff;
+      outline: 3px solid var(--color-on-brand);
       outline-offset: 2px;
     }
   }
@@ -88,11 +92,11 @@
   display: flex;
   justify-content: center;
   gap: 1.25rem;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 
   a {
     display: inline-flex;
-    color: #ffffff;
+    color: var(--color-on-brand);
     border-radius: 6px;
     transition: transform 0.2s ease, opacity 0.2s ease;
 
@@ -102,15 +106,15 @@
     }
 
     &:focus-visible {
-      outline: 3px solid #ffffff;
+      outline: 3px solid var(--color-on-brand);
       outline-offset: 4px;
     }
   }
 
   svg {
     display: block;
-    width: 40px;
-    height: 40px;
+    width: 32px;  /* antes 40px (ajustado à nova escala base) */
+    height: 32px;
   }
 }
 
@@ -120,25 +124,89 @@
 }
 
 /* --- Selos ANVISA e LGPD --- */
+
+/* Os dois selos lado a lado, como um bloco só. */
+.footer-seals {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Tamanho definido pela altura, para cada selo manter sua proporção. */
 .footer-seal {
   display: block;
-  width: 140px;
-  height: 140px;
+  width: auto;
   object-fit: contain;
+}
+
+.footer-seal--anvisa {
+  height: 145px; /* antes 180px (ajustado à nova escala base) */
+}
+
+/* O PNG da LGPD tem muita borda transparente: a altura é maior para o selo
+   visível ficar do tamanho da referência, e a margem negativa compensa essa
+   borda invisível para não aumentar a altura do rodapé. */
+.footer-seal--lgpd {
+  height: 230px;
+  margin-block: -40px;
+  position: relative;
+  top: 14px;
+}
+
+/* Link do selo da ANVISA: leve aumento ao passar o mouse. */
+.seal-link {
+  display: inline-block;
+  border-radius: var(--radius-sm);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-on-brand);
+    outline-offset: 4px;
+  }
 }
 
 /* --- Copyright --- */
 .footer-copy {
   margin: 0;
-  padding-top: 1.5rem;
+  padding: 1.75rem 0;
   text-align: center;
   font-size: 1rem;
+  font-weight: 400;
 }
 
-/* Telas pequenas: tudo empilhado e centralizado, como no site. */
+/* Acessibilidade: sem animações para quem pediu "reduzir movimento". */
+@media (prefers-reduced-motion: reduce) {
+  .footer-social a,
+  .seal-link {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Telas pequenas: tudo empilhado e centralizado. */
 @media (max-width: 768px) {
   .footer-info {
-    flex-direction: column;
-    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-seals {
+    gap: 1rem;
+  }
+
+  .footer-seal--anvisa {
+    height: 110px;
+  }
+
+  .footer-seal--lgpd {
+    height: 170px;
+    margin-block: -30px;
+    top: 10px;
   }
 }

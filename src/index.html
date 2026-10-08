@@ -1,12 +1,27 @@
 <!doctype html>
+<!-- Idioma da página em português do Brasil: melhora a leitura por leitores de tela
+     e evita que o navegador ofereça tradução automática. -->
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Notícias Radio Memory</title>
+  <!-- Título exibido na aba do navegador. Na página de detalhe, ele é trocado
+       pelo título da notícia (serviço Title do Angular). -->
+  <title>Notícias | Radio Memory</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Visualizador de notícias e posts da Radio Memory.">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Descrição exibida por buscadores e em pré-visualizações de links. -->
+  <meta name="description" content="Acompanhe as novidades da Radio Memory: lançamentos, eventos, cases de sucesso e conteúdos sobre tecnologia em Radiologia Odontológica.">
+
+  <!-- Fonte Inter (Google Fonts): garante a mesma tipografia em qualquer sistema.
+       preconnect adianta a conexão com o servidor de fontes (desempenho). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon: logo da Radio Memory (public/favicon.png), exibida na aba do navegador
+       e como atalho na tela inicial de celulares (apple-touch-icon). -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
 </head>
 <body>
   <app-root></app-root>

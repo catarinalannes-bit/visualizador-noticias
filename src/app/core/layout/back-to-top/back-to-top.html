@@ -1,0 +1,16 @@
+<!-- Escondido com visibility: hidden (no SCSS) enquanto o usuário não rola:
+     assim ele também sai da navegação por teclado e dos leitores de tela. -->
+<button
+  type="button"
+  class="back-to-top"
+  [class.visivel]="visivel()"
+  (click)="voltarAoTopo()"
+  aria-label="Voltar ao topo da página"
+  title="Voltar ao topo"
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <line x1="12" y1="19" x2="12" y2="5"></line>
+    <polyline points="5 12 12 5 19 12"></polyline>
+  </svg>
+</button>

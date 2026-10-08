@@ -1,4 +1,30 @@
-<!-- Contêiner principal que gere dinamicamente os estados da grelha de notícias -->
+<!-- Barra de resultados: quantidade de notícias e atalho para limpar os filtros.
+     Fica oculta durante o carregamento e no erro, quando o total ainda não é confiável.
+     aria-live="polite": leitores de tela anunciam o novo total quando a busca muda. -->
+@if (!store.loading() && !store.error()) {
+  <div class="results-bar">
+    <p class="results-count" aria-live="polite">
+      <strong>{{ totalResultados() }}</strong>
+      {{ totalResultados() === 1 ? 'notícia' : 'notícias' }}
+      @if (store.hasActiveFilters()) {
+        {{ totalResultados() === 1 ? 'encontrada' : 'encontradas' }}
+      }
+    </p>
+
+    @if (store.hasActiveFilters()) {
+      <button type="button" class="btn-limpar-filtros" (click)="limparFiltros()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+        </svg>
+        Limpar filtros
+      </button>
+    }
+  </div>
+}
+
+<!-- Contêiner principal que gerencia dinamicamente os estados da grade de notícias -->
 <div class="cards-grid">
 
   <!-- 1. Estado de Erro: falha na comunicação com a API.

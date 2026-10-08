@@ -1,0 +1,130 @@
+:host {
+  display: block;
+}
+
+/* Faixa com a foto da equipe + camada azul-marinho da marca. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: var(--color-on-brand);
+
+  /* Degradê azul-marinho por cima da foto: dá profundidade e deixa o texto legível.
+     Tons próprios do banner (mais escuros que o azul da marca). */
+  background-image:
+    linear-gradient(rgba(0, 38, 64, 0.8), rgba(0, 70, 110, 0.72)),
+    url('/banner.png');
+  background-size: cover;
+  background-position: center top;
+
+  /* Parallax: a imagem fica parada enquanto a página rola por cima. */
+  background-attachment: fixed;
+}
+
+/* Camada de tratamento da foto:
+   - backdrop-filter: leve desfoque + mais contraste e saturação
+   - vinheta: bordas mais escuras, que dão profundidade e levam o olhar ao texto.
+   Navegadores sem suporte a backdrop-filter mostram só a vinheta. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: blur(2px) contrast(1.15) saturate(1.2);
+  backdrop-filter: blur(2px) contrast(1.15) saturate(1.2);
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 20, 40, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* Faixa laranja diagonal, como no blog da Radio Memory */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  right: 9%;
+  width: 240px;
+  background-color: var(--color-orange-dark);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+
+/* Conteúdo acima da camada de tratamento e da faixa laranja, com entrada suave. */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  animation: hero-entrada 0.8s ease-out both;
+}
+
+/* "BLOG" com um traço laranja embaixo, como detalhe de marca. */
+.hero-eyebrow {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--color-orange);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-on-brand);
+}
+
+.hero-title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem); /* diminui sozinho em telas menores */
+  font-weight: 600;
+  line-height: 1.25;
+  /* Leve sombra: separa o texto da foto. */
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.hero-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@keyframes hero-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Celulares e tablets: o "fixed" não funciona bem (principalmente no iPhone),
+   então a imagem passa a rolar normalmente. */
+@media (max-width: 768px), (hover: none) {
+  .hero {
+    background-attachment: scroll;
+    min-height: 220px;
+    padding: 3rem 1.25rem;
+  }
+
+  .hero::after {
+    right: -80px;
+    width: 140px;
+  }
+}
+
+/* Acessibilidade: quem pediu "reduzir movimento" não vê parallax nem animação. */
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    background-attachment: scroll;
+  }
+
+  .hero-content {
+    animation: none;
+  }
+}
